@@ -1,0 +1,93 @@
+{% block content %} {% if not action %}
+<div class="col-12 card">
+  <div class="row">
+    <div class="col-11">
+      <h1><a href="/post/{{post.id}}">{{ post.title }}</a></h1>
+      <p>
+        {{ post.author }}
+        <span class="text-muted"
+          >created {{ moment(post.created_date).fromNow(no_suffix = False)
+          }}</span
+        >
+      </p>
+      <h3>{{ post.body }}</h3>
+    </div>
+    {% if current_user.username == post.author %}
+
+    <form
+      method="POST"
+      class="col-1 button-section"
+      action="{{url_for('page_detail', id = post.id, action ='edit')}}"
+    >
+      <!-- <button class="btn btn-danger">X</button> -->
+      <button type="submit"><i class="fas fa-edit"></i></button>
+    </form>
+    {% endif %}
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <form
+        method="POST"
+        class="form-inline"
+        action="{{url_for('page_detail', id = post.id, action ='comment')}}"
+      >
+        <div class="custom-input">
+          <input type="text" placeholder="Enter your comment" name="body" />
+          <button class="btn">Comment</button>
+        </div>
+      </form>
+    </div>
+    {% if comments %} {% for comment in comments %}
+    <div class="col-12 custom-comment">
+      <div>
+        <p>{{comment.body}}</p>
+        <div class="comment-header">
+          <h1>{{comment.author}}</h1>
+          <p class="text-muted">
+            Commented {{ moment(comment.created_at).fromNow(no_suffix = False)}}
+          </p>
+        </div>
+      </div>
+      <form
+        action="{{url_for('page_detail', id = post.id, action ='delete_comment')}}"
+        method="POST"
+      >
+        <button name="comment-id" value="{{comment.id}}" type="submit">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </form>
+    </div>
+    {% endfor %} {% endif %}
+  </div>
+</div>
+{% else %}
+<h1>{{action}}</h1>
+<div class="col-12 card">
+  <form
+    method="POST"
+    action="{{url_for('page_detail', id = post.id, action ='update')}}"
+  >
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput1"
+        placeholder="name@example.com"
+        name="title"
+        value="{{post.title}}"
+      />
+      <label for="exampleFormControlTextarea1">Content</label>
+      <textarea
+        class="form-control"
+        id="exampleFormControlTextarea1"
+        rows="3"
+        name="body"
+      >
+{{post.body}}</textarea
+      >
+    </div>
+    <button class="btn btn-primary">Update</button>
+  </form>
+</div>
+{% endif %} {% endblock content %}

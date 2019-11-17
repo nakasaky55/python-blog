@@ -1,0 +1,65 @@
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  text-align: center;
+}
+h1 a{
+  color: purple;
+}
+h1 a:hover {
+  color:purple;
+  text-decoration: none;
+}
+
+#navbarNav {
+  justify-content: space-between;
+}
+
+.btn-signout {
+  background-color: purple;
+}
+
+.btn-signout a {
+  color: white;
+}
+
+.btn-signout:hover {
+  color: purple;
+  border: 1px solid purple;
+}
+
+.btn-signout:hover a {
+  text-decoration: none;
+}
+
+.custom-input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.custom-input input {
+  height: 50px;
+  text-indent: 10px;
+  margin: 10px 0;
+}
+
+.custom-input button {
+  width: 100px;
+  background-color: purple;
+  color: white
+}
+
+
+
+.custom-comment {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+}
+
+.fa-trash-alt{
+  color: purple
+}

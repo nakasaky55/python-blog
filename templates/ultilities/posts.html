@@ -1,0 +1,39 @@
+{% block content %}
+<div class="row">
+  {% for post in posts %}
+  <div class="col-12 card">
+    <div class="row">
+      <div class="col-11">
+        <h1><a href="/post/{{post.id}}">{{ post.title }}</a></h1>
+        <p>{{ post.body }}</p>
+        <p>
+          {{ post.author }}
+          <span class="text-muted"
+            >created {{ moment(post.created_date).fromNow(no_suffix = False)
+            }}</span
+          >
+        </p>
+      </div>
+      {% if current_user.username == post.author %}
+
+      <div class="col-1 dropright">
+        <button
+          class="btn dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+        </button>
+        <form class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Edit</a>
+          <a class="dropdown-item" href="#">Delete</a>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

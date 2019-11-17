@@ -66,7 +66,7 @@ def root():
         posts = Blog.query.order_by(Blog.created_date.desc()).all()
         for i in posts:
             i.comments = Comment.query.filter_by(post_id = i.id).all()
-        # print("commt", len(posts[0].comments))
+        
         return render_template("./view/logged_in.html", posts = posts)
     else:
         return render_template("index.html")
@@ -146,6 +146,10 @@ def page_detail(id):
             db.session.commit()
             print("delte comment", request.form['comment-id'])
             return redirect(url_for("page_detail", id=id))
+        elif action == "delete_post":
+            db.session.delete(blog)
+            db.session.commit()
+            return redirect(url_for("root"))
     return render_template("./view/view_post_detail.html", post = blog, comments = comments)
 
 @app.route("/logout")

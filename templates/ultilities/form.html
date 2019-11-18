@@ -1,4 +1,4 @@
-{% block create_post %}<class class="row">
+{% block create_post %}<class class="row submit-button">
   <div class="col-12">
     <form method="POST">
       <div class="form-group">
@@ -7,7 +7,7 @@
           type="text"
           class="form-control"
           id="exampleFormControlInput1"
-          placeholder="Enter your title"
+          placeholder="Enter blog's title"
           name="title"
         />
       </div>
@@ -18,9 +18,10 @@
           id="exampleFormControlTextarea1"
           rows="3"
           name="description"
+          placeholder="Write something..."
         ></textarea>
       </div>
-      <button class="btn btn-primary">Submit</button>
+      <button class="btn submit-text">Submit</button>
     </form>
   </div>
 </class>

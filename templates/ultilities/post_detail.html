@@ -1,62 +1,87 @@
 {% block content %} {% if not action %}
-<div class="col-12 card">
+<div class="container card mt-5">
   <div class="row">
-    <div class="col-11">
-      <h1><a href="/post/{{post.id}}">{{ post.title }}</a></h1>
-      <p>
-        {{ post.author }}
-        <span class="text-muted"
-          >created {{ moment(post.created_date).fromNow(no_suffix = False)
-          }}</span
+    <div class="col">
+      <div class="container d-flex justify-content-between">
+        <h1><a href="/post/{{post.id}}">{{ post.title }}</a></h1>
+        <form
+          method="POST"
+          class="mt-2 edit-button"
+          action="{{url_for('page_detail', id = post.id, action ='edit')}}"
         >
-        <p>{{post.view_count}} <i class="fas fa-eye"></i></p>
-      </p>
-      <h3>{{ post.body }}</h3>
+          <!-- <button class="btn btn-danger">X</button> -->
+          <button class="btn btn-sm" type="submit">
+            <i class="fas fa-edit"></i>
+          </button>
+        </form>
+      </div>
+      <div class="container d-flex justify-content-start">
+        <p class="mx-2"><i class="fas fa-user"></i> {{ post.author }}</p>
+        <span class="mx-2"
+          ><i class="fas fa-clock"></i> {{
+          moment(post.created_date).fromNow(no_suffix = False) }}</span
+        >
+      </div>
+      <p class="lead">{{ post.body }}</p>
+      <div class="container d-flex justify-content-around">
+        <p class="mx-2">{{post.view_count}} <i class="fas fa-eye"></i></p>
+        <p class="mx-2">
+          {{post.comments|length}} <i class="fas fa-comment"></i>
+        </p>
+        {% if not post in current_user.liked_posts %}
+        <form method="POST" action="{{url_for('page_detail', id = post.id, action ='liked_post')}}">
+            <button type="submit" class="btn btn-sm btn-outline-danger mb-2 mx-2" href=""><i class="far fa-heart"></i></button>
+        </form>
+        {% else %}
+        <form method="POST" action="{{url_for('page_detail', id = post.id, action ='unliked_post')}}">
+            <button type="submit" class="btn btn-sm btn-outline-danger mb-2 mx-2" href=""><i class="fas fa-heart"></i></button>
+        </form>
+        {% endif %}
+      </div>
     </div>
-    {% if current_user.username == post.author %}
-
-    <form
-      method="POST"
-      class="col-1 button-section"
-      action="{{url_for('page_detail', id = post.id, action ='edit')}}"
-    >
-      <!-- <button class="btn btn-danger">X</button> -->
-      <button type="submit"><i class="fas fa-edit"></i></button>
-    </form>
-    {% endif %}
+    {% if current_user.username == post.author %} {% endif %}
   </div>
-  <div class="row">
-    <div class="col-12">
+  <div class="container my-2">
+    <div>
       <form
         method="POST"
         class="form-inline"
         action="{{url_for('page_detail', id = post.id, action ='comment')}}"
       >
-        <div class="custom-input">
-          <input type="text" placeholder="Enter your comment" name="body" />
+        <div class="custom-input my-3">
+          <input type="text" autocomplete="off" placeholder="Enter your comment" name="body" />
           <button class="btn">Comment</button>
         </div>
       </form>
     </div>
     {% if comments %} {% for comment in comments %}
-    <div class="col-12 custom-comment">
+    <div class="card my-3 custom-comment">
       <div>
-        <p>{{comment.body}}</p>
-        <div class="comment-header">
-          <h1>{{comment.author}}</h1>
-          <p class="text-muted">
-            Commented {{ moment(comment.created_at).fromNow(no_suffix = False)}}
-          </p>
+        <div class="container d-flex justify-content-between my-2">
+          <p class="card-title"><i class="fas fa-user"></i> {{comment.author}}</p>
+          <small class="text-muted">
+              <i class="fas fa-clock"></i> {{ moment(comment.created_at).fromNow(no_suffix = False)}}
+            </small>
+        </div>
+        <div class="container card-text ml-4 comment-header">
+          <p>{{comment.body}}</p>
+        </div>
+        <div class="container d-flex justify-content-end mb-2 trash-button">
+            <form
+            action="{{url_for('page_detail', id = post.id, action ='delete_comment')}}"
+            method="POST"
+          >
+            <button
+              class="btn btn-sm"
+              name="comment-id"
+              value="{{comment.id}}"
+              type="submit"
+            >
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </form>
         </div>
       </div>
-      <form
-        action="{{url_for('page_detail', id = post.id, action ='delete_comment')}}"
-        method="POST"
-      >
-        <button name="comment-id" value="{{comment.id}}" type="submit">
-          <i class="fas fa-trash-alt"></i>
-        </button>
-      </form>
     </div>
     {% endfor %} {% endif %}
   </div>

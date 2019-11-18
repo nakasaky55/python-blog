@@ -12,6 +12,7 @@
             }}</span>
         </p>
         <p>{{post.comments|length}} <i class="fas fa-comment"></i></p>
+        <p>{{post.view_count}} <i class="fas fa-eye"></i></p>
       </div>
       {% if current_user.username == post.author %}
 

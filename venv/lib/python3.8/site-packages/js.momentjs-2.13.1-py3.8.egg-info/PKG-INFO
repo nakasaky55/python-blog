@@ -1,0 +1,78 @@
+Metadata-Version: 1.0
+Name: js.momentjs
+Version: 2.13.1
+Summary: Fanstatic packaging of Moment.js
+Home-page: UNKNOWN
+Author: Fanstatic Developers
+Author-email: fanstatic@googlegroups.com
+License: BSD
+Description: js.momentjs
+        ***********
+        
+        Introduction
+        ============
+        
+        This library packages `Moment.js`_ for `fanstatic`_.
+        
+        .. _`fanstatic`: http://fanstatic.org
+        .. _`Moment.js`: http://momentjs.com/
+        
+        This requires integration between your web framework and ``fanstatic``,
+        and making sure that the original resources (shipped in the ``resources``
+        directory in ``js.momentjs``) are published to some URL.
+        
+        
+        How to use?
+        ===========
+        
+        
+        You can import ``moment`` from ``js.momentjs`` and ``need`` it where you want
+        these resources to be included on a page::
+        
+          >>> from js.momentjs import moment
+          >>> moment.need()
+        
+        By default no locale information is included. However you can choose
+        to include all the timezone data::
+        
+          >>> from js.momentjs import moment_with_locales
+          >>> moment_with_locales.need()
+        
+        CHANGES
+        *******
+        
+        2.13.1 (2016-07-26)
+        ===================
+        
+        - Provides all languages as fanstatic resources.
+        
+        
+        2.13.0 (2016-06-14)
+        ===================
+        
+        - Update to moment-2.13.0 and moment-timezone-0.5.4.
+        
+        2.8.3-1 (2014-11-12)
+        ====================
+        
+        - Add moment-timezone.
+        
+        2.8.3 (2014-11-11)
+        ==================
+        
+        - Update to 2.8.3.
+        
+        - The structure of the moment.js distribution changed, you may need to update
+          your Python imports.
+        
+        2.6.0-1 (2014-05-22)
+        ====================
+        
+        - Add timezone plugin and its data file containing all the timezone information.
+        
+        2.6.0 (2014-05-04)
+        ==================
+        
+        - Initial release.
+        
+Platform: UNKNOWN

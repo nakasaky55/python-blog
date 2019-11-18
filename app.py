@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_moment import Moment
 from werkzeug.security import generate_password_hash,check_password_hash
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 moment = Moment(app)
@@ -15,6 +16,7 @@ login_manager.init_app(app)
 login_manager.login_view = "login_page"
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # DEFINE Blog model
 class Blog(db.Model):
@@ -23,6 +25,7 @@ class Blog(db.Model):
     body = db.Column(db.String, nullable = False)
     author = db.Column(db.String(20), nullable = False)
     created_date = db.Column(db.DateTime, server_default = db.func.now())
+    view_count = db.Column(db.Integer, default=0)
 
 # DEFINE MODEL user
 class User(UserMixin, db.Model):
@@ -122,6 +125,9 @@ def page_detail(id):
     print("idddd", id)
     action = request.args.get('action')
     blog = Blog.query.filter_by(id = id).first()
+    blog.view_count = blog.view_count + 1
+    db.session.add(blog)
+    db.session.commit()
     comments = Comment.query.filter_by(post_id = id).all()
     print("comments length", len(comments))
     if request.method == "POST":

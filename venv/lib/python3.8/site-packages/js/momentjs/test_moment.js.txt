@@ -1,0 +1,15 @@
+How to use?
+===========
+
+
+You can import ``moment`` from ``js.momentjs`` and ``need`` it where you want
+these resources to be included on a page::
+
+  >>> from js.momentjs import moment
+  >>> moment.need()
+
+By default no locale information is included. However you can choose
+to include all the timezone data::
+
+  >>> from js.momentjs import moment_with_locales
+  >>> moment_with_locales.need()

@@ -8,28 +8,27 @@
         <p>{{ post.body }}</p>
         <p>
           {{ post.author }}
-          <span class="text-muted"
-            >created {{ moment(post.created_date).fromNow(no_suffix = False)
-            }}</span
-          >
+          <span class="text-muted">created {{ moment(post.created_date).fromNow(no_suffix = False)
+            }}</span>
         </p>
+        <p>{{post.comments|length}} <i class="fas fa-comment"></i></p>
       </div>
       {% if current_user.username == post.author %}
 
       <div class="col-1 dropright">
-        <button
-          class="btn dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
+        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
         </button>
-        <form class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">Edit</a>
-          <a class="dropdown-item" href="#">Delete</a>
-        </form>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <form method="POST" action="{{url_for('page_detail', id = post.id, action ='edit')}}">
+            <button type="submit" class="dropdown-item" href=>Edit</button>
+            <!-- <a class="dropdown-item" href="#">Delete</a> -->
+          </form>
+          <form method="POST" action="{{url_for('page_detail', id = post.id, action ='delete_post')}}">
+            <button type="submit" class="dropdown-item" href=>Delete</button>
+          </form>
+        </div>
+
       </div>
       {% endif %}
     </div>

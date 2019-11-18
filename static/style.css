@@ -52,14 +52,45 @@ h1 a:hover {
   color: white
 }
 
+.custom-input button:hover {
+  width: 100px;
+  background-color: purple;
+  color: white
+}
 
+.trash-button button {
+  background-color: purple;
+}
 
-.custom-comment {
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid black;
+.trash-button button:hover {
+  background-color: purple;
+}
+
+.edit-button button {
+  background-color: purple;
+}
+
+.edit-button button:hover {
+  background-color: purple;
+}
+
+.submit-button button {
+  background-color: purple;
+}
+
+.submit-button button:hover {
+  background-color: purple;
+  color: white
+}
+
+.fa-edit {
+  color: white
+}
+
+.submit-text {
+  color: white
 }
 
 .fa-trash-alt{
-  color: purple
+  color: white
 }

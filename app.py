@@ -3,18 +3,21 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_moment import Moment
 from werkzeug.security import generate_password_hash,check_password_hash
+from flask_migrate import Migrate
+import os
 
 app = Flask(__name__)
 moment = Moment(app)
 app.config['SECRET_KEY'] = 'thisissecret'
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///db.db"
-
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('PSQL') or "sqlite:///db.db"
+print("environment",os.environ.get('PSQL'))
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login_page"
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # DEFINE Blog model
 class Blog(db.Model):
@@ -23,6 +26,7 @@ class Blog(db.Model):
     body = db.Column(db.String, nullable = False)
     author = db.Column(db.String(20), nullable = False)
     created_date = db.Column(db.DateTime, server_default = db.func.now())
+    view_count = db.Column(db.Integer, default=0)
 
 # DEFINE MODEL user
 class User(UserMixin, db.Model):
@@ -30,6 +34,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(255), nullable = False, unique = True)
     username = db.Column(db.String(255), nullable = False, unique = True)
     password = db.Column(db.String(255), nullable=False, unique = False)
+    liked_posts = db.relationship("Blog", secondary="likes", backref="likes", lazy=True)
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -44,6 +49,11 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, nullable = False)
     author = db.Column(db.String, nullable = False)
     created_at = db.Column(db.DateTime, server_default = db.func.now())
+
+likes = db.Table('likes',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('post_id', db.Integer, db.ForeignKey('blog.id'), primary_key=True)
+)
 
 db.create_all()
 
@@ -122,6 +132,9 @@ def page_detail(id):
     print("idddd", id)
     action = request.args.get('action')
     blog = Blog.query.filter_by(id = id).first()
+    blog.view_count = blog.view_count + 1
+    db.session.add(blog)
+    db.session.commit()
     comments = Comment.query.filter_by(post_id = id).all()
     print("comments length", len(comments))
     if request.method == "POST":
@@ -150,6 +163,16 @@ def page_detail(id):
             db.session.delete(blog)
             db.session.commit()
             return redirect(url_for("root"))
+        elif action == "liked_post":
+            current_user.liked_posts.append(blog)
+            db.session.commit()
+            return redirect(url_for('page_detail', id=id))
+        elif action == "unliked_post":
+            print("khoa", current_user)
+            print("khoa mini", blog)
+            current_user.liked_posts.remove(blog)
+            db.session.commit()
+            return redirect(url_for('page_detail', id=id))
     return render_template("./view/view_post_detail.html", post = blog, comments = comments)
 
 @app.route("/logout")

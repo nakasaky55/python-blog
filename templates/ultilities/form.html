@@ -1,5 +1,10 @@
-{% block create_post %}<class class="row">
-  <div class="col-12">
+{% block create_post %}<class class="row submit-button">
+  <div class="container py-3">
+      <button class="btn submit-text" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          New Post
+        </button>
+        <div class="collapse" id="collapseExample">
+          <div class="container py-3">
     <form method="POST">
       <div class="form-group">
         <label for="exampleFormControlInput1">Title</label>
@@ -7,7 +12,7 @@
           type="text"
           class="form-control"
           id="exampleFormControlInput1"
-          placeholder="Enter your title"
+          placeholder="Enter blog title"
           name="title"
         />
       </div>
@@ -18,10 +23,13 @@
           id="exampleFormControlTextarea1"
           rows="3"
           name="description"
+          placeholder="Write something..."
         ></textarea>
       </div>
-      <button class="btn btn-primary">Submit</button>
+      <button class="btn submit-text">Submit</button>
     </form>
+  </div>
+  </div>
   </div>
 </class>
 {% endblock %}
